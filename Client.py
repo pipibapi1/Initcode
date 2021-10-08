@@ -66,6 +66,7 @@ class Client:
 		self.label = Label(self.master, height=19)
 		self.label.grid(row=0, column=0, columnspan=4, sticky=W+E+N+S, padx=5, pady=5)
 
+#PART1#
 #########################################################################################################################################
 	def setupMovie(self):
 		"""Setup button handler."""
@@ -83,6 +84,8 @@ class Client:
 		"""Play button handler."""
 	#TODO
 
+
+   #PART 2
 	#########################################################################################################################################
 
 	def listenRtp(self):
@@ -102,7 +105,7 @@ class Client:
 		"""Connect to the Server. Start a new RTSP/TCP session."""
 	#TODO
 
-
+#PART 3
 #################################################################################################################################################
 
 	def sendRtspRequest(self, requestCode):

@@ -7,7 +7,7 @@ class RtpPacket:
 	
 	def __init__(self):
 		pass
-		
+		#PART 4 ##################
 	def encode(self, version, padding, extension, cc, seqnum, marker, pt, ssrc, payload):
 		"""Encode the RTP packet with header fields and payload."""
 		timestamp = int(time())

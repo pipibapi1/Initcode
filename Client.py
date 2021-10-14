@@ -70,7 +70,7 @@ class Client:
 #PART1#
 #########################################################################################################################################
 	def setupMovie(self):
-    		"""Setup button handler."""
+		"""Setup button handler."""
 	#TODO
 		if self.state == self.INIT:
 			self.sendRtspRequest(self.SETUP)

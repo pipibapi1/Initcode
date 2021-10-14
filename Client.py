@@ -72,41 +72,54 @@ class Client:
 	def setupMovie(self):
     		"""Setup button handler."""
 	#TODO
-	
+		if self.state == self.INIT:
+			self.sendRtspRequest(self.SETUP)
+
 	def exitClient(self):
 		"""Teardown button handler."""
 	#TODO
+		self.sendRtspRequest(self.TEARDOWN)
+		self.master.destroy()
+		os.remove(CACHE_FILE_NAME + str(self.sessionId) + CACHE_FILE_EXT)
 
 	def pauseMovie(self):
 		"""Pause button handler."""
 	#TODO
-	
+		if self.state == self.PLAYING:
+			self.sendRtspRequest(self.PAUSE)
+
 	def playMovie(self):
 		"""Play button handler."""
 	#TODO
+		if self.state == self.READY:
+			# Create a new thread to listen for RTP packets
+			threading.Thread(target=self.listenRtp).start()
+			self.playEvent = threading.Event()
+			self.playEvent.clear()
+			self.sendRtspRequest(self.PLAY)
 
 
    #PART 2
 	#########################################################################################################################################
 
-	def listenRtp(self):		
+	def listenRtp(self):
 		"""Listen for RTP packets."""
 		#TODO
-					
+
 	def writeFrame(self, data):
 		"""Write the received frame to a temp image file. Return the image file."""
 	#TODO
-	
+
 	def updateMovie(self, imageFile):
 		"""Update the image file as video frame in the GUI."""
 	#TODO
-		
+
 	def connectToServer(self):
 		"""Connect to the Server. Start a new RTSP/TCP session."""
 	#TODO
-	
+
 	def sendRtspRequest(self, requestCode):
-		"""Send RTSP request to the server."""	
+		"""Send RTSP request to the server."""
 		#-------------
 		# TO COMPLETE
 		#-------------
@@ -114,7 +127,7 @@ class Client:
 #PART 3
 #################################################################################################################################################
 
-	
+
 	def recvRtspReply(self):
     		"""Receive RTSP reply from the server."""
 		#TODO
@@ -128,23 +141,23 @@ class Client:
     						self.rtspSocket.shutdown(socket.SHUT_RDWR)
 				   		self.rtspSocket.close()
 						break
-	
+
 	def parseRtspReply(self, data):
 		"""Parse the RTSP reply from the server."""
 		#TODO
 		lines = data.decode().split('\n')
 		seqNum = int(lines[1].split(' ')[1])
-		
+
 		# Process only if the server reply's sequence number is the same as the request's
 		if seqNum == self.rtspSeq:
 			session = int(lines[2].split(' ')[1])
 			# New RTSP session ID
 			if self.sessionId == 0:
 				self.sessionId = session
-			
+
 			# Process only if the session ID is the same
 			if self.sessionId == session:
-				if int(lines[0].split(' ')[1]) == 200: 
+				if int(lines[0].split(' ')[1]) == 200:
 					if self.requestSent == self.SETUP:
 						#-------------
 						# TO COMPLETE
@@ -153,22 +166,22 @@ class Client:
                         
 						# Update RTSP state.
 						self.state = self.READY
-						
+
 						# Open RTP port.
-						self.openRtpPort() 
+						self.openRtpPort()
 					elif self.requestSent == self.PLAY:
 						self.state = self.PLAYING
 					elif self.requestSent == self.PAUSE:
 						self.state = self.READY
                         
-						
+
 						# The play thread exits. A new thread is created on resume.
 						self.playEvent.set()
 					elif self.requestSent == self.TEARDOWN:
 						self.state = self.INIT
-						
+
 						# Flag the teardownAcked to close the socket.
-						self.teardownAcked = 1 
+						self.teardownAcked = 1
 
 	def openRtpPort(self):
 		"""Open RTP socket binded to a specified port."""
@@ -177,11 +190,11 @@ class Client:
 		#-------------
 		# Create a new datagram socket to receive RTP packets from the server
 		# self.rtpSocket = ...
-		
+
 		# Set the timeout value of the socket to 0.5sec
 		# ...
 		self.rtpSocket.settimeout(0.5)
-		
+
 		try:
 			# Bind the socket to the address using the RTP port given by the client user.
 			self.state=self.READY

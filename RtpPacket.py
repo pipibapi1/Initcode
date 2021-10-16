@@ -15,7 +15,7 @@ class RtpPacket:
 		self.header[0] = (version << 6) + (padding << 5) + (extension << 4) + (cc)
 		self.header[1] = (marker << 7) + (pt)
 		firstByteSeq = seqnum >> 8
-		mask = int (11111111, 2)
+		mask = 0xFF
 		self.header[2] = firstByteSeq & mask
 		self.header[3] = seqnum & mask
 		firstByteTime = timestamp >> 24

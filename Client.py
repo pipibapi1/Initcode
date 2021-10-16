@@ -1,5 +1,5 @@
 from tkinter import *
-import tkinter.messagebox
+from tkinter import messagebox
 from PIL import Image, ImageTk
 import socket, threading, sys, traceback, os
 
@@ -231,18 +231,18 @@ class Client:
 
 
 	def recvRtspReply(self):
-    		"""Receive RTSP reply from the server."""
-		#TODO
-		while True :
-    			reply = self.rtspSocket.recv(1024)
-
-			if reply:
-    					self.parseRtspReply(reply)
-				# Close the RTSP socket upon requesting Teardown
-					if self.requestSent == self.TEARDOWN:
-    					self.rtspSocket.shutdown(socket.SHUT_RDWR)
-				   		self.rtspSocket.close()
-						break
+		"""Receive RTSP reply from the server."""
+		while True:
+			reply = self.rtspSocket.recv(1024)
+			
+			if reply: 
+				self.parseRtspReply(reply.decode("utf-8"))
+			
+			# Close the RTSP socket upon requesting Teardown
+			if self.requestSent == self.TEARDOWN:
+				self.rtspSocket.shutdown(socket.SHUT_RDWR)
+				self.rtspSocket.close()
+				break
 
 	def parseRtspReply(self, data):
 		"""Parse the RTSP reply from the server."""

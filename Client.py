@@ -9,6 +9,10 @@ CACHE_FILE_NAME = "cache-"
 CACHE_FILE_EXT = ".jpg"
 
 class Client:
+	SETUP_STR = 'SETUP'
+	PLAY_STR = 'PLAY'
+	PAUSE_STR = 'PAUSE'
+	TEARDOWN_STR = 'TEARDOWN'
 	INIT = 0
 	READY = 1
 	PLAYING = 2
@@ -18,6 +22,9 @@ class Client:
 	PLAY = 1
 	PAUSE = 2
 	TEARDOWN = 3
+
+	RTSP_VER = "RTSP/1.0"
+	TRANSPORT = "RTP/UDP"
 
 	def __init__(self, master, serveraddr, serverport, rtpport, filename):
 		self.master = master

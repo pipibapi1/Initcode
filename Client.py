@@ -243,7 +243,7 @@ class Client:
 			reply = self.rtspSocket.recv(1024)
 			
 			if reply: 
-				self.parseRtspReply(reply.decode("utf-8"))
+				self.parseRtspReply(reply)
 			
 			# Close the RTSP socket upon requesting Teardown
 			if self.requestSent == self.TEARDOWN:
@@ -302,6 +302,7 @@ class Client:
 
 		# Set the timeout value of the socket to 0.5sec
 		# ...
+		self.rtpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		self.rtpSocket.settimeout(0.5)
 
 		try:

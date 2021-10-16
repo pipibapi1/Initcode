@@ -240,7 +240,7 @@ class Client:
     					self.parseRtspReply(reply)
 				# Close the RTSP socket upon requesting Teardown
 					if self.requestSent == self.TEARDOWN:
-    						self.rtspSocket.shutdown(socket.SHUT_RDWR)
+    					self.rtspSocket.shutdown(socket.SHUT_RDWR)
 				   		self.rtspSocket.close()
 						break
 
